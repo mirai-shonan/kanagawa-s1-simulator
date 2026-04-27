@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>神奈川公立高校 特色検査なし校 S1値シミュレーター</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans JP',sans-serif;background:#F4F5F7;color:#1A1A2E;padding:20px 16px 60px;max-width:520px;margin:0 auto}
+h1{font-size:18px;font-weight:700;text-align:center;margin-bottom:4px}
+.sub{font-size:11px;color:#6B7280;text-align:center;margin-bottom:20px}
+
+/* タブ */
+.tabs{display:flex;gap:6px;margin-bottom:20px}
+.tab{flex:1;height:44px;border:1.5px solid #D1D5DB;border-radius:10px;background:#fff;color:#6B7280;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.tab .tab-sub{font-size:9px;opacity:.7}
+.tab.active{background:#185FA5;border-color:#185FA5;color:#fff}
+
+/* カード */
+.card{background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:18px;margin-bottom:12px}
+.card-title{font-size:12px;font-weight:700;color:#6B7280;letter-spacing:.06em;margin-bottom:12px}
+
+/* 入力 */
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px}
+.ig label{display:block;font-size:11px;color:#6B7280;margin-bottom:4px}
+.ig input[type=number]{width:100%;height:56px;border:1.5px solid #D1D5DB;border-radius:8px;background:#F9FAFB;color:#1A1A2E;font-family:'DM Mono',monospace;font-size:26px;font-weight:500;text-align:center;outline:none;transition:border-color .15s;-moz-appearance:textfield}
+.ig input[type=number]::-webkit-outer-spin-button,
+.ig input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+.ig input[type=number]:focus{border-color:#185FA5}
+.ig input[type=number]::placeholder{font-size:13px;font-family:'Noto Sans JP',sans-serif;color:#9CA3AF;font-weight:400}
+.ig input.err{border-color:#EF4444}
+.hint{font-size:10px;color:#9CA3AF;text-align:center;margin-top:3px}
+
+/* 内申ビジュアル */
+.naishi-viz{padding:12px;background:#F9FAFB;border-radius:10px;margin-top:4px}
+.viz-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.viz-label{width:52px;color:#6B7280;flex-shrink:0;font-size:11px}
+.viz-bar-wrap{flex:1;height:14px;background:#E5E7EB;border-radius:7px;overflow:hidden}
+.viz-bar{height:100%;border-radius:7px;transition:width .3s}
+.bar-g2{background:#3B8BD4}
+.bar-g3{background:#1D9E75}
+.viz-num{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;width:72px;text-align:right;flex-shrink:0}
+.viz-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #E5E7EB;padding-top:7px;margin-top:2px}
+.viz-total-label{font-size:11px;color:#6B7280}
+.viz-total-val{font-family:'DM Mono',monospace;font-size:16px;font-weight:500}
+.viz-formula{font-size:10px;color:#9CA3AF;margin-top:2px}
+
+/* 比率 */
+.ratio-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ratio-label{font-size:12px;color:#6B7280;width:62px;flex-shrink:0}
+.ratio-row input[type=range]{flex:1;accent-color:#3B8BD4;height:4px}
+.ratio-val{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;width:20px;text-align:right}
+.ratio-hint{font-size:10px;color:#9CA3AF;margin-top:2px}
+
+.errmsg{font-size:11px;color:#EF4444;margin-top:6px;display:none}
+.errmsg.vis{display:block}
+
+/* 計算ボタン */
+.calc-btn{width:100%;height:52px;border:none;border-radius:12px;background:#185FA5;color:#fff;font-family:'Noto Sans JP',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:background .15s,transform .1s;letter-spacing:.05em;margin-top:2px}
+.calc-btn:hover{background:#0C447C}
+.calc-btn:active{transform:scale(.98)}
+
+/* S1値表示 */
+.s1-box{background:#0C447C;border-radius:14px;padding:18px;text-align:center;margin:14px 0 12px}
+.s1-label{font-size:11px;color:#85B7EB;letter-spacing:.1em;margin-bottom:4px}
+.s1-num{font-family:'DM Mono',monospace;font-size:48px;font-weight:500;color:#fff;line-height:1}
+.s1-expr{font-size:11px;color:#B5D4F4;margin-top:6px}
+
+/* 学校リスト */
+.school-section{margin-bottom:16px}
+.section-label{font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.section-label.safe{background:#ECFDF5;color:#065F46}
+.section-label.border{background:#FEF9C3;color:#713F12}
+.section-label.challenge{background:#FEF2F2;color:#7F1D1D}
+.section-label .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-safe{background:#059669}
+.dot-border{background:#CA8A04}
+.dot-challenge{background:#DC2626}
+
+.school-row{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fff;border:1px solid #E5E7EB;border-radius:10px;margin-bottom:6px}
+.school-row:last-child{margin-bottom:0}
+.school-name{font-size:13px;font-weight:500;flex:1;min-width:0}
+.school-s1{font-family:'DM Mono',monospace;font-size:12px;color:#6B7280;white-space:nowrap}
+.school-score{font-size:11px;white-space:nowrap;flex-shrink:0;text-align:right}
+.score-need{font-weight:700;color:#185FA5}
+.score-label{font-size:10px;color:#9CA3AF}
+.toku-tag{font-size:9px;padding:1px 5px;border-radius:6px;background:#ECFDF5;color:#059669;white-space:nowrap;flex-shrink:0}
+
+/* 2年生モードの注記 */
+.grade2-note{background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;padding:10px 14px;font-size:11px;color:#92400E;margin-bottom:12px;line-height:1.7}
+
+.no-result-msg{text-align:center;color:#9CA3AF;font-size:13px;padding:20px}
+.year-note{font-size:10px;color:#9CA3AF;text-align:center;margin-top:10px;line-height:1.6}
+
+#result{display:none}
+#result.vis{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* エリアフィルター */
+.area-filter{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.area-btn{padding:5px 12px;border:1.5px solid #D1D5DB;border-radius:20px;background:#fff;color:#6B7280;font-family:'Noto Sans JP',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
+.area-btn.active{background:#185FA5;border-color:#185FA5;color:#fff}
+
+/* エリアフィルターカードのハイライト */
+.area-filter-card{background:#F0F7FF;border:1.5px solid #BFDBFE;border-radius:14px;padding:14px;margin-bottom:8px}
+.area-filter-card .card-title{color:#1E40AF;margin-bottom:8px}
+.area-filter-card .card-title::before{content:'🗺️ ';font-size:13px}
+</style>
+</head>
+<body>
+
+<h1>神奈川公立高校 S1値シミュレーター</h1>
+<p class="sub">特色検査なし校を内申・当日点から探せるツール</p>
+
+<!-- タブ -->
+<div class="tabs">
+  <button class="tab active" id="tab-g2" onclick="switchTab('g2')">
+    2年生
+    <span class="tab-sub">内申だけで学校を探す</span>
+  </button>
+  <button class="tab" id="tab-g3" onclick="switchTab('g3')">
+    3年生
+    <span class="tab-sub">S1値を計算して探す</span>
+  </button>
+</div>
+
+<!-- ── 2年生モード ── -->
+<div id="mode-g2">
+  <div class="card">
+    <div class="card-title">2年生 内申点（9教科合計 / 12月時点の評定）</div>
+    <div class="ig">
+      <label>2年生の内申</label>
+      <input type="number" id="g2only" max="45" oninput="clamp(this,9,45)" placeholder="例：38">
+      <div class="hint">満点 45点</div>
+    </div>
+    <div class="errmsg" id="e-g2only">9〜45の範囲で入力してください</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">内申：学力 比率 <span style="font-size:10px;background:#EFF6FF;color:#1D4ED8;padding:2px 7px;border-radius:20px;font-weight:500">合計10に自動調整</span></div>
+    <div class="ratio-row">
+      <span class="ratio-label">内申 (f)</span>
+      <input type="range" id="rf2" min="2" max="8" value="5" oninput="syncR2('f')">
+      <span class="ratio-val" id="vf2">5</span>
+    </div>
+    <div class="ratio-row">
+      <span class="ratio-label">学力 (g)</span>
+      <input type="range" id="rg2" min="2" max="8" value="5" oninput="syncR2('g')">
+      <span class="ratio-val" id="vg2">5</span>
+    </div>
+    <div class="ratio-hint">多くの学校は5:5。翠嵐・柏陽・厚木→3:7、湘南・平塚江南・海老名→4:6</div>
+  </div>
+
+  <button class="calc-btn" onclick="calcG2()">学校候補を探す</button>
+</div>
+
+<!-- ── 3年生モード ── -->
+<div id="mode-g3" style="display:none">
+  <div class="card">
+    <div class="card-title">内申点（9教科合計 / 12月時点の評定）</div>
+    <div class="input-row">
+      <div class="ig">
+        <label>2年生の内申</label>
+        <input type="number" id="g2" max="45" oninput="clamp(this,9,45)">
+        <div class="hint">満点 45点</div>
+      </div>
+      <div class="ig">
+        <label>3年生の内申</label>
+        <input type="number" id="g3" max="45" oninput="clamp(this,9,45)">
+        <div class="hint">満点 45点</div>
+      </div>
+    </div>
+    <div class="errmsg" id="e-naishi">9〜45の範囲で入力してください</div>
+    <div class="naishi-viz">
+      <div class="viz-row">
+        <span class="viz-label">2年 ×1</span>
+        <div class="viz-bar-wrap"><div class="viz-bar bar-g2" id="bar-g2" style="width:0%"></div></div>
+        <span class="viz-num" id="num-g2">—</span>
+      </div>
+      <div class="viz-row">
+        <span class="viz-label">3年 ×2</span>
+        <div class="viz-bar-wrap"><div class="viz-bar bar-g3" id="bar-g3" style="width:0%"></div></div>
+        <span class="viz-num" id="num-g3">—</span>
+      </div>
+      <div class="viz-total">
+        <div>
+          <div class="viz-total-label">内申合計（/135点）</div>
+          <div class="viz-formula" id="viz-formula">入力すると表示されます</div>
+        </div>
+        <div class="viz-total-val" id="num-total">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">当日得点（5教科合計）</div>
+    <div class="ig" style="max-width:180px">
+      <label>5教科合計</label>
+      <input type="number" id="score" max="500" oninput="clamp(this,0,500)" placeholder="空欄→逆引き">
+      <div class="hint">満点500点 / 空欄にすると逆引きモード</div>
+    </div>
+    <div class="errmsg" id="e-score">0〜500の範囲で入力してください</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">内申：学力 比率 <span style="font-size:10px;background:#EFF6FF;color:#1D4ED8;padding:2px 7px;border-radius:20px;font-weight:500">合計10に自動調整</span></div>
+    <div class="ratio-row">
+      <span class="ratio-label">内申 (f)</span>
+      <input type="range" id="rf3" min="2" max="8" value="5" oninput="syncR3('f')">
+      <span class="ratio-val" id="vf3">5</span>
+    </div>
+    <div class="ratio-row">
+      <span class="ratio-label">学力 (g)</span>
+      <input type="range" id="rg3" min="2" max="8" value="5" oninput="syncR3('g')">
+      <span class="ratio-val" id="vg3">5</span>
+    </div>
+    <div class="ratio-hint">多くの学校は5:5。翠嵐・柏陽・厚木→3:7、湘南・平塚江南・海老名→4:6</div>
+  </div>
+
+  <button class="calc-btn" onclick="calcG3()">S1値を計算して学校を探す</button>
+</div>
+
+<!-- 結果 -->
+<div id="result">
+  <div style="height:14px"></div>
+
+  <!-- 2年生：内申ベースのメッセージ -->
+  <div id="g2-note" class="grade2-note" style="display:none">
+    📌 2年生の内申をもとに表示しています。内申はこれから変わります。「当日点の目安」は3年内申が同じ場合の参考値です。
+  </div>
+
+  <!-- 3年生：S1値表示 -->
+  <div id="s1-box-wrap" style="display:none">
+    <div class="s1-box">
+      <div class="s1-label">S1値</div>
+      <div class="s1-num" id="r-s1">—</div>
+      <div class="s1-expr" id="r-expr">—</div>
+    </div>
+  </div>
+
+  <!-- エリア絞り込み -->
+  <div id="area-filter-wrap" style="display:none">
+    <div class="area-filter-card">
+      <div class="card-title">エリアで絞り込む</div>
+      <div class="area-filter" id="area-filter"></div>
+    </div>
+  </div>
+
+  <!-- 学校リスト -->
+  <div id="school-list"></div>
+
+  <!-- 広告スペース（AdSense審査通過後に有効化）
+  <div style="...">Google AdSense コードをここに挿入</div>
+  -->
+</div>
+
+<div class="year-note">
+  <div style="background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:12px 14px;margin-bottom:10px;text-align:left;line-height:2">
+    <div style="font-weight:700;color:#374151;margin-bottom:4px;font-size:11px">📐 S1値の計算式（神奈川県公立高校 第1次選考）</div>
+    <div style="font-size:11px;color:#4B5563">
+      <b>S1値 = a×f + b×g</b>（特色検査あり校は + d×i）<br>
+      a = 内申合計（/135）× 100　／　b = 当日5教科合計（/500）× 100<br>
+      f・g = 各校が定める内申・学力の比率（f+g=10）<br>
+      内申合計 = 2年9教科 + 3年9教科×2（最大135点）<br>
+      ※満点は1000点（特色あり校は1000点超）
+    </div>
+  </div>
+  ※学校候補のS1目安値はWもぎ合格可能性80%基準値（2026年度・特色検査除く・1000点満点）をもとにしています。<br>
+  ※特色検査あり校は実際のS1値が異なります。必ず各校の最新募集案内でご確認ください。
+</div>
+
+<script>
+// ============================================================
+// 学校データ（カナガク 2026年度 合格可能性80%基準値）
+// s1: 特色検査を除いた1000点満点でのS1値
+// f,g: 内申・学力比率（合計10）
+// toku: 特色検査あり
+// ============================================================
+const SCHOOLS = [
+  // 横浜北部
+  {name:'横浜翠嵐',area:'横浜',  f:3,g:7,s1:959, toku:true,area:'横浜'},
+  {name:'川和',area:'横浜',      f:4,g:6,s1:913, toku:true,area:'横浜'},
+  {name:'柏陽',area:'横浜',      f:3,g:7,s1:937, toku:true,area:'横浜'},
+  {name:'横浜緑ケ丘',f:4,g:6,s1:930, toku:true,area:'横浜'},
+  {name:'希望ケ丘',area:'横浜',  f:4,g:6,s1:890, toku:true,area:'横浜'},
+  {name:'横浜平沼',area:'横浜',  f:5,g:5,s1:866, toku:true,area:'横浜'},
+  {name:'光陵',area:'横浜',      f:4,g:6,s1:881, toku:true,area:'横浜'},
+  {name:'市ケ尾',area:'横浜',    f:5,g:5,s1:809, toku:false,area:'横浜'},
+  {name:'元石川',area:'横浜',    f:5,g:5,s1:732, toku:false,area:'横浜'},
+  {name:'荏田',area:'横浜',      f:6,g:4,s1:644, toku:false,area:'横浜'},
+  {name:'港北',area:'横浜',      f:5,g:5,s1:753, toku:false,area:'横浜'},
+  {name:'城郷',area:'横浜',      f:5,g:5,s1:610, toku:false,area:'横浜'},
+  {name:'鶴見',area:'横浜',      f:5,g:5,s1:718, toku:false,area:'横浜'},
+  {name:'岸根',area:'横浜',      f:5,g:5,s1:670, toku:false,area:'横浜'},
+  {name:'霧が丘',area:'横浜',    f:5,g:5,s1:596, toku:false,area:'横浜'},
+  {name:'新羽',area:'横浜',      f:6,g:4,s1:522, toku:false,area:'横浜'},
+  {name:'新栄',area:'横浜',      f:5,g:5,s1:531, toku:false,area:'横浜'},
+  {name:'旭',area:'横浜',        f:5,g:5,s1:554, toku:false,area:'横浜'},
+  {name:'松陽',area:'横浜',      f:4,g:6,s1:786, toku:false,area:'横浜'},
+  {name:'横浜瀬谷',area:'横浜',  f:5,g:5,s1:696, toku:false,area:'横浜'},
+  {name:'二俣川',area:'横浜',    f:5,g:5,s1:558, toku:false,area:'横浜'},
+  {name:'保土ケ谷',area:'横浜',  f:7,g:3,s1:505, toku:false,area:'横浜'},
+  {name:'白山',area:'横浜',      f:7,g:3,s1:485, toku:false,area:'横浜'},
+  {name:'舞岡',area:'横浜',      f:5,g:5,s1:579, toku:false,area:'横浜'},
+  {name:'上矢部',area:'横浜',    f:5,g:5,s1:521, toku:false,area:'横浜'},
+  {name:'金井',area:'横浜',      f:5,g:5,s1:634, toku:false,area:'横浜'},
+  {name:'横浜南陵',area:'横浜',  f:5,g:5,s1:562, toku:false,area:'横浜'},
+  {name:'横浜立野',area:'横浜',  f:5,g:5,s1:612, toku:false,area:'横浜'},
+  {name:'横浜氷取沢',f:4,g:6,s1:645, toku:false,area:'横浜'},
+  {name:'横浜緑園',area:'横浜',  f:5,g:5,s1:521, toku:false,area:'横浜'},
+  {name:'横浜桜陽',area:'横浜',  f:6,g:4,s1:456, toku:false,area:'横浜'},
+  {name:'横浜清陵',area:'横浜',  f:4,g:6,s1:626, toku:false,area:'横浜'},
+  {name:'横浜栄',area:'横浜',    f:4,g:6,s1:724, toku:false,area:'横浜'},
+  // 市立横浜
+  {name:'市立桜丘',area:'横浜',  f:3,g:7,s1:814, toku:false,area:'横浜'},
+  {name:'市立金沢',area:'横浜',  f:3,g:7,s1:850, toku:false,area:'横浜'},
+  {name:'市立橘',area:'横浜',    f:4,g:6,s1:760, toku:false,area:'横浜'},
+  // 川崎
+  {name:'新城',area:'川崎',      f:5,g:5,s1:850, toku:false,area:'川崎'},
+  {name:'住吉',area:'川崎',      f:4,g:6,s1:686, toku:false,area:'川崎'},
+  {name:'川崎北',area:'川崎',    f:5,g:5,s1:562, toku:false,area:'川崎'},
+  {name:'生田',area:'川崎',      f:5,g:5,s1:775, toku:false,area:'川崎'},
+  {name:'百合丘',area:'川崎',    f:5,g:5,s1:554, toku:false,area:'川崎'},
+  {name:'生田東',area:'川崎',    f:4,g:6,s1:498, toku:false,area:'川崎'},
+  {name:'菅',area:'川崎',        f:5,g:5,s1:449, toku:false,area:'川崎'},
+  {name:'麻生',area:'川崎',      f:5,g:5,s1:603, toku:false,area:'川崎'},
+  {name:'県立川崎',area:'川崎',  f:5,g:5,s1:578, toku:false,area:'川崎'},
+  {name:'大師',area:'川崎',      f:5,g:5,s1:414, toku:false,area:'川崎'},
+  {name:'市立高津',area:'川崎',  f:5,g:5,s1:663, toku:false,area:'川崎'},
+  {name:'市立幸',area:'川崎',    f:5,g:5,s1:570, toku:false,area:'川崎'},
+  // 横須賀・三浦
+  {name:'横須賀',area:'横須賀・三浦',    f:3,g:7,s1:872, toku:true,area:'横須賀・三浦'},
+  {name:'横須賀大津',f:4,g:6,s1:722, toku:false,area:'横須賀・三浦'},
+  {name:'追浜',area:'横須賀・三浦',      f:4,g:6,s1:790, toku:false,area:'横須賀・三浦'},
+  {name:'津久井浜',area:'横須賀・三浦',  f:5,g:5,s1:612, toku:false,area:'横須賀・三浦'},
+  {name:'逗子葉山',area:'横須賀・三浦',  f:5,g:5,s1:536, toku:false,area:'横須賀・三浦'},
+  {name:'三浦初声',area:'横須賀・三浦',  f:6,g:4,s1:488, toku:false,area:'横須賀・三浦'},
+  // 鎌倉・湘南
+  {name:'鎌倉',area:'鎌倉・湘南',      f:4,g:6,s1:871, toku:true,area:'鎌倉・湘南'},
+  {name:'七里ガ浜',area:'鎌倉・湘南',  f:4,g:6,s1:769, toku:false,area:'鎌倉・湘南'},
+  {name:'大船',area:'鎌倉・湘南',      f:3,g:7,s1:741, toku:false,area:'鎌倉・湘南'},
+  {name:'湘南',area:'鎌倉・湘南',      f:4,g:6,s1:965, toku:true,area:'鎌倉・湘南'},
+  {name:'藤沢西',area:'鎌倉・湘南',    f:4,g:6,s1:748, toku:false,area:'鎌倉・湘南'},
+  {name:'湘南台',area:'鎌倉・湘南',    f:4,g:6,s1:729, toku:false,area:'鎌倉・湘南'},
+  {name:'藤沢清流',area:'鎌倉・湘南',  f:5,g:5,s1:581, toku:false,area:'鎌倉・湘南'},
+  // 茅ケ崎・平塚
+  {name:'茅ケ崎北陵',f:4,g:6,s1:822, toku:true,area:'茅ケ崎・平塚'},
+  {name:'茅ケ崎',area:'茅ケ崎・平塚',    f:5,g:5,s1:645, toku:false,area:'茅ケ崎・平塚'},
+  {name:'鶴嶺',area:'茅ケ崎・平塚',      f:4,g:6,s1:674, toku:false,area:'茅ケ崎・平塚'},
+  {name:'茅ケ崎西浜',f:6,g:4,s1:535, toku:false,area:'茅ケ崎・平塚'},
+  // 寒川高校は2026年度末廃校のため除外
+  {name:'平塚江南',area:'茅ケ崎・平塚',  f:3,g:7,s1:843, toku:true,area:'茅ケ崎・平塚'},
+  {name:'高浜',area:'茅ケ崎・平塚',      f:5,g:5,s1:528, toku:false,area:'茅ケ崎・平塚'},
+  {name:'大磯',area:'小田原・西湘',      f:4,g:6,s1:661, toku:false,area:'小田原・西湘'},
+  {name:'二宮',area:'小田原・西湘',      f:6,g:4,s1:478, toku:false,area:'小田原・西湘'},
+  {name:'平塚湘風',area:'茅ケ崎・平塚',  f:6,g:4,s1:423, toku:false,area:'茅ケ崎・平塚'},
+  // 秦野・伊勢原
+  {name:'秦野',area:'秦野・伊勢原',      f:4,g:6,s1:748, toku:false,area:'秦野・伊勢原'},
+  {name:'秦野曽屋',area:'秦野・伊勢原',  f:6,g:4,s1:586, toku:false,area:'秦野・伊勢原'},
+  {name:'伊勢原',area:'秦野・伊勢原',    f:5,g:5,s1:585, toku:false,area:'秦野・伊勢原'},
+  {name:'伊志田',area:'秦野・伊勢原',    f:5,g:5,s1:714, toku:false,area:'秦野・伊勢原'},
+  // 小田原・西湘
+  {name:'小田原',area:'小田原・西湘',    f:4,g:6,s1:895, toku:true,area:'小田原・西湘'},
+  {name:'小田原東',area:'小田原・西湘',  f:5,g:5,s1:484, toku:false,area:'小田原・西湘'},
+  {name:'西湘',area:'小田原・西湘',      f:5,g:5,s1:714, toku:false,area:'小田原・西湘'},
+  {name:'足柄',area:'小田原・西湘',      f:5,g:5,s1:542, toku:false,area:'小田原・西湘'},
+  {name:'山北',area:'小田原・西湘',      f:5,g:5,s1:467, toku:false,area:'小田原・西湘'},
+  // 厚木・海老名・大和
+  {name:'厚木',area:'県央',      f:3,g:7,s1:933, toku:true,area:'県央'},
+  {name:'厚木王子',area:'県央',  f:5,g:5,s1:699, toku:false,area:'県央'},
+  {name:'厚木北',area:'県央',    f:6,g:4,s1:544, toku:false,area:'県央'},
+  {name:'厚木西',area:'県央',    f:5,g:5,s1:614, toku:false,area:'県央'},
+  {name:'厚木清南',area:'県央',  f:6,g:4,s1:null,toku:false,area:'県央'},
+  {name:'海老名',area:'県央',    f:4,g:6,s1:829, toku:false,area:'県央'},
+  {name:'有馬',area:'県央',      f:5,g:5,s1:616, toku:false,area:'県央'},
+  {name:'大和',area:'県央',      f:4,g:6,s1:893, toku:true,area:'県央'},
+  {name:'大和南',area:'県央',    f:5,g:5,s1:514, toku:false,area:'県央'},
+  {name:'大和西',area:'県央',    f:4,g:6,s1:663, toku:false,area:'県央'},
+  {name:'座間',area:'県央',      f:4,g:6,s1:790, toku:false,area:'県央'},
+  {name:'綾瀬',area:'県央',      f:6,g:4,s1:574, toku:false,area:'県央'},
+  {name:'綾瀬西',area:'県央',    f:6,g:4,s1:460, toku:false,area:'県央'},
+  {name:'愛川',area:'県央', f:6,g:4,s1:409, toku:false}, // 面接型
+  // 相模原
+  {name:'相模原',area:'相模原',    f:5,g:5,s1:894, toku:true,area:'相模原'},
+  {name:'麻溝台',area:'相模原',    f:5,g:5,s1:768, toku:false,area:'相模原'},
+  {name:'上鶴間',area:'相模原',    f:5,g:5,s1:502, toku:false,area:'相模原'},
+  {name:'上溝',area:'相模原',      f:5,g:5,s1:649, toku:false,area:'相模原'},
+  {name:'上溝南',area:'相模原',    f:5,g:5,s1:688, toku:false,area:'相模原'},
+  {name:'橋本',area:'相模原',      f:5,g:5,s1:635, toku:false,area:'相模原'},
+  {name:'相模田名',area:'相模原',  f:7,g:3,s1:558, toku:false,area:'相模原'},
+  {name:'相模原城山',f:6,g:4,s1:527, toku:false,area:'相模原'},
+  {name:'津久井',area:'相模原',    f:6,g:4,s1:410, toku:true,area:'相模原'},
+  // 神奈川総合
+  {name:'神奈川総合（個性化）',f:3,g:7,s1:888,toku:false,area:'横浜'},
+  {name:'神奈川総合（国際科）',f:4,g:6,s1:854,toku:true,area:'横浜'},
+];
+
+let currentTab = 'g2';
+
+// ── タブ切替 ──
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tab-g2').classList.toggle('active', tab==='g2');
+  document.getElementById('tab-g3').classList.toggle('active', tab==='g3');
+  document.getElementById('mode-g2').style.display = tab==='g2' ? '' : 'none';
+  document.getElementById('mode-g3').style.display = tab==='g3' ? '' : 'none';
+  document.getElementById('result').classList.remove('vis');
+}
+
+// ── 入力clamp ──
+function clamp(el, mn, mx) {
+  const v = parseInt(el.value);
+  if (el.value === '' || isNaN(v)) return;
+  if (v > mx) el.value = mx;
+  if (el.id === 'g2' || el.id === 'g3') updateViz();
+}
+
+// ── 比率スライダー（2年生用） ──
+function syncR2(c) {
+  const fe = document.getElementById('rf2'), ge = document.getElementById('rg2');
+  let f = +fe.value, g = +ge.value;
+  if (c==='f') { g=10-f; if(g<2){g=2;f=8;} ge.value=g; }
+  else { f=10-g; if(f<2){f=2;g=8;} fe.value=f; }
+  document.getElementById('vf2').textContent = f;
+  document.getElementById('vg2').textContent = g;
+}
+
+// ── 比率スライダー（3年生用） ──
+function syncR3(c) {
+  const fe = document.getElementById('rf3'), ge = document.getElementById('rg3');
+  let f = +fe.value, g = +ge.value;
+  if (c==='f') { g=10-f; if(g<2){g=2;f=8;} ge.value=g; }
+  else { f=10-g; if(f<2){f=2;g=8;} fe.value=f; }
+  document.getElementById('vf3').textContent = f;
+  document.getElementById('vg3').textContent = g;
+}
+
+// ── 内申ビジュアル ──
+function updateViz() {
+  const g2 = +document.getElementById('g2').value || 0;
+  const g3 = +document.getElementById('g3').value || 0;
+  const tot = g2 + g3 * 2;
+  document.getElementById('bar-g2').style.width = (g2 / 45 * 50) + '%';
+  document.getElementById('bar-g3').style.width = (g3 / 45 * 100) + '%';
+  document.getElementById('num-g2').textContent = g2 ? g2 + ' / 45' : '—';
+  document.getElementById('num-g3').textContent = g3 ? `${g3}×2 = ${g3*2}` : '—';
+  document.getElementById('num-total').textContent = tot || '—';
+  document.getElementById('viz-formula').textContent = (g2||g3) ? `${g2} ＋ ${g3}×2 ＝ ${tot}` : '入力すると表示されます';
+}
+['g2','g3'].forEach(id => document.getElementById(id).addEventListener('input', updateViz));
+
+// ── 学校リスト生成 ──
+function renderSchoolList(myS1, f, g, isG2mode) {
+  // 各校のS1値を、入力した比率で再計算（異なる比率の学校は参考値になる）
+  // ただしカナガクデータは各校固有比率で算出されているので
+  // ここでは「カナガクのs1値との差分」でソート・分類する
+  const withData = SCHOOLS.filter(s => s.s1 !== null);
+  const sorted = [...withData].sort((a,b) => a.s1 - b.s1);
+
+  // 分類閾値
+  const SAFE_MARGIN = 40;      // myS1がs1より40以上高い → 安全圏
+  const CHALLENGE_MARGIN = 100; // myS1がs1より100以上低い → 対象外
+
+  const safe = [], border = [], challenge = [];
+  sorted.forEach(s => {
+    const diff = myS1 - s.s1;
+    if (diff >= SAFE_MARGIN) safe.push({...s, diff});
+    else if (diff > -CHALLENGE_MARGIN) border.push({...s, diff});
+    else challenge.push({...s, diff});
+  });
+
+  // 当日点の必要点数を逆算する関数
+  // S1 = a*f + b*g  →  b = (S1 - a*f) / g  → score = b/100*500
+  function calcScoreNeed(schoolS1, naishiTotal, f, g) {
+    const a = Math.round(naishiTotal / 135 * 100 * 10) / 10;
+    const bNeed = (schoolS1 - a * f) / g;
+    return Math.round(bNeed / 100 * 500);
+  }
+
+  let html = '';
+
+  function renderSection(list, cls, dotCls, label, showScore, naishiTotal, f, g) {
+    if (list.length === 0) return '';
+    // 件数が多い場合は上位10件に絞る
+    const shown = list.slice().reverse(); // 近い順に
+    let h = `<div class="school-section">
+      <div class="section-label ${cls}"><span class="dot ${dotCls}"></span>${label}（${list.length}校）</div>`;
+    shown.forEach(s => {
+      let scoreHtml = '';
+      if (showScore && naishiTotal !== null) {
+        const need = calcScoreNeed(s.s1, naishiTotal, s.f, s.g);
+        const clamped = Math.min(500, Math.max(0, need));
+        const impossible = need > 500;
+        scoreHtml = `<div class="school-score">
+          ${impossible
+            ? '<span class="score-label">当日点：難しい</span>'
+            : `<span class="score-need">${clamped}点</span><span class="score-label">/500点</span>`
+          }
+        </div>`;
+      }
+      h += `<div class="school-row">
+        <span class="school-name">${s.name}</span>
+        ${s.toku ? '<span class="toku-tag">特色あり</span>' : ''}
+        <span class="school-s1">S1目安 ${s.s1}</span>
+        ${scoreHtml}
+      </div>`;
+    });
+    if (list.length > 10) {
+      h += `<button class="show-more-btn" onclick="this.parentElement.querySelectorAll('.school-row-hidden').forEach(el=>{el.style.display='flex';el.classList.remove('school-row-hidden')});this.remove()">他 ${list.length-10} 校を表示</button>`;
+    }
+    h += '</div>';
+    return h;
+  }
+
+  // 2年生モード：内申から仮S1を計算して使う
+  // ナデシコ合計は2年内申×1（3年は同じとみなす）
+  const naishiForScore = isG2mode ? null : null; // 3年生は外から渡す
+
+  // 安全圏が多すぎる場合は近い順に絞る
+  const safeShown = safe.length > 10 ? safe.slice(-10) : safe;
+
+  html += renderSection(safe.reverse(), 'safe', 'dot-safe', '✅ 安全圏', true, null, f, g);
+  html += renderSection(border, 'border', 'dot-border', '📍 ボーダー付近', true, null, f, g);
+  html += renderSection(challenge.slice(0,5), 'challenge', 'dot-challenge', '🎯 チャレンジ', true, null, f, g);
+
+  if (!html) {
+    html = '<div class="no-result-msg">該当する学校が見つかりませんでした</div>';
+  }
+  document.getElementById('school-list').innerHTML = html;
+}
+
+// ── 2年生モード計算 ──
+function calcG2() {
+  const g2v = parseInt(document.getElementById('g2only').value);
+  const errEl = document.getElementById('e-g2only');
+  if (isNaN(g2v) || g2v < 9 || g2v > 45) {
+    errEl.classList.add('vis');
+    document.getElementById('g2only').classList.add('err');
+    return;
+  }
+  errEl.classList.remove('vis');
+  document.getElementById('g2only').classList.remove('err');
+
+  const f = +document.getElementById('rf2').value;
+  const g = +document.getElementById('rg2').value;
+
+  // 3年内申も同じと仮定してS1を計算
+  const naishiTotal = g2v + g2v * 2; // 3年=2年と同値で仮定
+  const a = Math.round(naishiTotal / 135 * 100 * 10) / 10;
+  // 当日点は各校のS1から逆算して表示するので、ここではS1を基準に分類
+  // 内申のみのS1目安（当日点は後で各校ごとに逆算）
+  // 仮の当日点として「b=50（500点中250点相当）」で仮S1を計算して分類の基準にする
+  const bMid = 50;
+  const myS1approx = Math.round(a * f + bMid * g);
+
+  document.getElementById('g2-note').style.display = '';
+  document.getElementById('s1-box-wrap').style.display = 'none';
+
+  // 各校に対して「この内申で合格するには何点必要か」を表示
+  lastRenderFn = () => renderSchoolListG2(g2v, f, g);
+  renderSchoolListG2(g2v, f, g);
+  initAreaFilter();
+
+  const rc = document.getElementById('result');
+  rc.classList.add('vis');
+  setTimeout(() => rc.scrollIntoView({behavior:'smooth', block:'start'}), 50);
+}
+
+function renderSchoolListG2(g2v, f, g) {
+  // 3年内申は2年と同じと仮定
+  const naishiTotal = g2v * 3; // g2 + g2*2
+
+  function calcScoreNeed(schoolS1, nt, sf, sg) {
+    const a = Math.round(nt / 135 * 100 * 10) / 10;
+    const bNeed = (schoolS1 - a * sf) / sg;
+    return Math.round(bNeed / 100 * 500);
+  }
+
+  // エリアフィルター適用
+  const withData = getFilteredSchools();
+  const results = withData.map(s => {
+    const need = calcScoreNeed(s.s1, naishiTotal, s.f, s.g);
+    return {...s, need};
+  }).sort((a,b) => a.need - b.need);
+
+  // 分類閾値を内申に応じて動的に設定
+  // 内申38(比率84%)のとき: 安全圏〜350点、チャレンジ400点〜
+  // 内申が低いほど閾値は高くなる
+  const naishiRatio = naishiTotal / 135;
+  const safeThreshold   = Math.round(419 - 82 * naishiRatio);
+  const borderThreshold = safeThreshold + 50;
+
+  // 特色検査あり校はすべてチャレンジ扱い
+  const safe      = results.filter(s => !s.toku && s.need <= safeThreshold);
+  const border    = results.filter(s => !s.toku && s.need > safeThreshold && s.need <= borderThreshold);
+  const challenge = results.filter(s => s.toku || (!s.toku && s.need > borderThreshold && s.need <= 500));
+
+  function renderSection(list, cls, dotCls, label) {
+    if (!list.length) return '';
+    // 近い順（必要点が高い順）に表示、最大10件
+    const shown = list.slice().reverse();
+    let h = `<div class="school-section">
+      <div class="section-label ${cls}"><span class="dot ${dotCls}"></span>${label}（${list.length}校）</div>`;
+    shown.forEach(s => {
+      h += `<div class="school-row">
+        <span class="school-name">${s.name}</span>
+        ${s.toku ? '<span class="toku-tag">特色あり</span>' : ''}
+        <span class="school-s1">S1目安 ${s.s1}</span>
+        <div class="school-score">
+          <span class="score-need">${s.need}点</span>
+          <div class="score-label">当日目安</div>
+        </div>
+      </div>`;
+    });
+    if (list.length > 10) {
+      h += `<button class="show-more-btn" onclick="this.parentElement.querySelectorAll('.school-row-hidden').forEach(el=>{el.style.display='flex';el.classList.remove('school-row-hidden')});this.remove()">他 ${list.length-10} 校を表示</button>`;
+    }
+    h += '</div>';
+    return h;
+  }
+
+  let html = renderSection(safe, 'safe', 'dot-safe', `✅ 安全圏（当日${safeThreshold}点以下で目安）`);
+  html += renderSection(border, 'border', 'dot-border', `📍 ボーダー（当日${safeThreshold}〜${borderThreshold}点が目安）`);
+  html += renderSection(challenge, 'challenge', 'dot-challenge', `🎯 チャレンジ（当日${borderThreshold}〜500点が必要）`);
+  if (!html) html = '<div class="no-result-msg">該当する学校が見つかりませんでした</div>';
+  document.getElementById('school-list').innerHTML = html;
+}
+
+// ── 3年生モード計算 ──
+function calcG3() {
+  const g2v = parseInt(document.getElementById('g2').value);
+  const g3v = parseInt(document.getElementById('g3').value);
+  const scoreRaw = document.getElementById('score').value.trim();
+  const hasScore = scoreRaw !== '' && !isNaN(parseInt(scoreRaw));
+  const scv = hasScore ? parseInt(scoreRaw) : null;
+
+  // 内申バリデーション（常に必須）
+  const okN = !isNaN(g2v) && g2v>=9 && g2v<=45 && !isNaN(g3v) && g3v>=9 && g3v<=45;
+  document.getElementById('e-naishi').classList.toggle('vis', !okN);
+  document.getElementById('g2').classList.toggle('err', isNaN(g2v)||g2v<9||g2v>45);
+  document.getElementById('g3').classList.toggle('err', isNaN(g3v)||g3v<9||g3v>45);
+  if (!okN) return;
+
+  // 当日点バリデーション（入力済みの場合のみ）
+  if (hasScore && (scv < 0 || scv > 500)) {
+    document.getElementById('e-score').classList.add('vis');
+    document.getElementById('score').classList.add('err');
+    return;
+  }
+  document.getElementById('e-score').classList.remove('vis');
+  document.getElementById('score').classList.remove('err');
+
+  const f = +document.getElementById('rf3').value;
+  const g = +document.getElementById('rg3').value;
+  const nt = g2v + g3v * 2;
+
+  function calcScoreNeed(schoolS1, nt2, sf, sg) {
+    const a2 = Math.round(nt2 / 135 * 100 * 10) / 10;
+    const bNeed = (schoolS1 - a2 * sf) / sg;
+    return Math.round(bNeed / 100 * 500);
+  }
+
+  function renderSection(list, cls, dotCls, label, showDiff) {
+    if (!list.length) return '';
+    const shown = list.slice().reverse();
+    let h = `<div class="school-section">
+      <div class="section-label ${cls}"><span class="dot ${dotCls}"></span>${label}（${list.length}校）</div>`;
+    shown.forEach((s, idx) => {
+      const need = calcScoreNeed(s.s1, nt, s.f, s.g);
+      const clamped = Math.min(500, Math.max(0, need));
+      const impossible = need > 500;
+      const hiddenStyle = idx >= 10 ? ' style="display:none"' : '';
+      const diffHtml = showDiff
+        ? `<span class="school-s1">S1目安 ${s.s1}（${s.diff >= 0 ? '+' : ''}${Math.round(s.diff)}）</span>`
+        : `<span class="school-s1">S1目安 ${s.s1}</span>`;
+      h += `<div class="school-row${idx >= 10 ? ' school-row-hidden' : ''}"${hiddenStyle}>
+        <span class="school-name">${s.name}</span>
+        ${s.toku ? '<span class="toku-tag">特色あり</span>' : ''}
+        ${diffHtml}
+        <div class="school-score">
+          ${impossible
+            ? '<span class="score-label">難しい</span>'
+            : `<span class="score-need">${clamped}点</span><div class="score-label">当日目安</div>`}
+        </div>
+      </div>`;
+    });
+    if (list.length > 10) {
+      h += `<button class="show-more-btn" onclick="this.parentElement.querySelectorAll('.school-row-hidden').forEach(el=>{el.style.display='flex';el.classList.remove('school-row-hidden')});this.remove()">他 ${list.length-10} 校を表示</button>`;
+    }
+    h += '</div>';
+    return h;
+  }
+
+  if (hasScore) {
+    // ── 当日点あり：S1値計算モード ──
+    const a = Math.round(nt / 135 * 100 * 10) / 10;
+    const b = Math.round(scv / 500 * 100 * 10) / 10;
+    const s1 = Math.round((a * f + b * g) * 10) / 10;
+
+    document.getElementById('g2-note').style.display = 'none';
+    document.getElementById('s1-box-wrap').style.display = '';
+    document.getElementById('r-s1').textContent = s1.toFixed(1);
+    document.getElementById('r-expr').textContent = `${a.toFixed(1)}×${f} + ${b.toFixed(1)}×${g} = ${s1.toFixed(1)}`;
+
+    function doRender() {
+      const filtered = getFilteredSchools();
+      const res = filtered.map(s => ({...s, diff: s1 - s.s1}));
+      const s2 = res.filter(s => !s.toku && s.diff >= 40).sort((a,b) => a.diff - b.diff);
+      const b2 = res.filter(s => !s.toku && s.diff >= -60 && s.diff < 40).sort((a,b) => a.diff - b.diff);
+      const c2 = res.filter(s => s.toku || (!s.toku && s.diff >= -150 && s.diff < -60)).sort((a,b) => a.diff - b.diff);
+      let html = renderSection(s2, 'safe', 'dot-safe', '✅ 安全圏', true);
+      html += renderSection(b2, 'border', 'dot-border', '📍 ボーダー付近', true);
+      html += renderSection(c2, 'challenge', 'dot-challenge', '🎯 チャレンジ', true);
+      if (!html) html = '<div class="no-result-msg">該当する学校が見つかりませんでした</div>';
+      document.getElementById('school-list').innerHTML = html;
+    }
+    lastRenderFn = doRender;
+    doRender();
+
+  } else {
+    // ── 当日点なし：逆引きモード ──
+    document.getElementById('g2-note').style.display = '';
+    document.getElementById('g2-note').textContent = '📌 当日点が空欄のため、各校に合格するのに必要な当日点を逆算しています。';
+    document.getElementById('s1-box-wrap').style.display = 'none';
+
+    // 内申から閾値を動的計算
+    const naishiRatio = nt / 135;
+    const safeThreshold   = Math.round(419 - 82 * naishiRatio);
+    const borderThreshold = safeThreshold + 50;
+
+    function doRender() {
+      const filtered = getFilteredSchools();
+      const results = filtered.map(s => {
+        const need = calcScoreNeed(s.s1, nt, s.f, s.g);
+        return {...s, need, diff: 0};
+      }).sort((a, b) => a.need - b.need);
+
+      const safe      = results.filter(s => !s.toku && s.need <= safeThreshold);
+      const border    = results.filter(s => !s.toku && s.need > safeThreshold && s.need <= borderThreshold);
+      const challenge = results.filter(s => s.toku || (!s.toku && s.need > borderThreshold && s.need <= 500));
+
+      let html = renderSection(safe, 'safe', 'dot-safe', `✅ 安全圏（当日${safeThreshold}点以下で目安）`, false);
+      html += renderSection(border, 'border', 'dot-border', `📍 ボーダー（当日${safeThreshold}〜${borderThreshold}点が目安）`, false);
+      html += renderSection(challenge, 'challenge', 'dot-challenge', `🎯 チャレンジ（当日${borderThreshold}点〜）`, false);
+      if (!html) html = '<div class="no-result-msg">該当する学校が見つかりませんでした</div>';
+      document.getElementById('school-list').innerHTML = html;
+    }
+    lastRenderFn = doRender;
+    doRender();
+  }
+
+  initAreaFilter();
+  const rc = document.getElementById('result');
+  rc.classList.add('vis');
+  setTimeout(() => rc.scrollIntoView({behavior:'smooth', block:'start'}), 50);
+}
+
+// ── エリアフィルター ──
+let currentArea = 'すべて';
+let lastRenderFn = null; // 最後に使ったレンダー関数を保持
+
+function initAreaFilter() {
+  const areas = ['すべて', '横浜', '川崎', '横須賀・三浦', '鎌倉・湘南',
+    '茅ケ崎・平塚', '秦野・伊勢原', '小田原・西湘', '県央', '相模原'];
+  currentArea = 'すべて';
+  const wrap = document.getElementById('area-filter-wrap');
+  const filter = document.getElementById('area-filter');
+  wrap.style.display = '';
+  filter.innerHTML = areas.map(a =>
+    `<button class="area-btn${a==='すべて'?' active':''}" onclick="setArea('${a}')">${a}</button>`
+  ).join('');
+}
+
+function setArea(area) {
+  currentArea = area;
+  // ボタンのactive更新
+  document.querySelectorAll('.area-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === area);
+  });
+  // 現在のタブに合わせて再レンダー
+  if (lastRenderFn) lastRenderFn();
+}
+
+// SCHOOLS をエリアでフィルタリング
+function getFilteredSchools() {
+  if (currentArea === 'すべて') return SCHOOLS.filter(s => s.s1 !== null);
+  return SCHOOLS.filter(s => s.s1 !== null && s.area === currentArea);
+}
+
+</script>
+</body>
+</html>
