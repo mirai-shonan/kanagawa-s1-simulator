@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>神奈川公立高校 特色検査なし校 S1値シミュレーター</title>
+<title>神奈川公立高校 特色検査なし校 S1値シミュレーター（2025年度版）</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -128,7 +128,7 @@ h1{font-size:18px;font-weight:700;text-align:center;margin-bottom:4px}
 <!-- ── 2年生モード ── -->
 <div id="mode-g2">
   <div class="card">
-    <div class="card-title">2年生 内申点（9教科合計 / 12月時点の評定）</div>
+    <div class="card-title">2年生 内申点（9教科合計 / 学年末評定）</div>
     <div class="ig">
       <label>2年生の内申</label>
       <input type="number" id="g2only" max="45" oninput="clamp(this,9,45)" placeholder="例：38">
@@ -158,7 +158,7 @@ h1{font-size:18px;font-weight:700;text-align:center;margin-bottom:4px}
 <!-- ── 3年生モード ── -->
 <div id="mode-g3" style="display:none">
   <div class="card">
-    <div class="card-title">内申点（9教科合計 / 12月時点の評定）</div>
+    <div class="card-title">内申点（9教科合計）</div>
     <div class="input-row">
       <div class="ig">
         <label>2年生の内申</label>
@@ -266,7 +266,7 @@ h1{font-size:18px;font-weight:700;text-align:center;margin-bottom:4px}
       ※満点は1000点（特色あり校は1000点超）
     </div>
   </div>
-  ※学校候補のS1目安値はWもぎ合格可能性80%基準値（2026年度・特色検査除く・1000点満点）をもとにしています。<br>
+  ※学校候補のS1目安値はWもぎ合格可能性80%基準値（2025年度・特色検査除く・1000点満点）をもとにしています。<br>
   ※特色検査あり校は実際のS1値が異なります。必ず各校の最新募集案内でご確認ください。
 </div>
 
@@ -279,121 +279,121 @@ h1{font-size:18px;font-weight:700;text-align:center;margin-bottom:4px}
 // ============================================================
 const SCHOOLS = [
   // 横浜北部
-  {name:'横浜翠嵐',area:'横浜',  f:3,g:7,s1:959, toku:true,area:'横浜'},
-  {name:'川和',area:'横浜',      f:4,g:6,s1:913, toku:true,area:'横浜'},
-  {name:'柏陽',area:'横浜',      f:3,g:7,s1:937, toku:true,area:'横浜'},
-  {name:'横浜緑ケ丘',f:4,g:6,s1:930, toku:true,area:'横浜'},
-  {name:'希望ケ丘',area:'横浜',  f:4,g:6,s1:890, toku:true,area:'横浜'},
-  {name:'横浜平沼',area:'横浜',  f:5,g:5,s1:866, toku:true,area:'横浜'},
-  {name:'光陵',area:'横浜',      f:4,g:6,s1:881, toku:true,area:'横浜'},
-  {name:'市ケ尾',area:'横浜',    f:5,g:5,s1:809, toku:false,area:'横浜'},
-  {name:'元石川',area:'横浜',    f:5,g:5,s1:732, toku:false,area:'横浜'},
-  {name:'荏田',area:'横浜',      f:6,g:4,s1:644, toku:false,area:'横浜'},
-  {name:'港北',area:'横浜',      f:5,g:5,s1:753, toku:false,area:'横浜'},
-  {name:'城郷',area:'横浜',      f:5,g:5,s1:610, toku:false,area:'横浜'},
-  {name:'鶴見',area:'横浜',      f:5,g:5,s1:718, toku:false,area:'横浜'},
-  {name:'岸根',area:'横浜',      f:5,g:5,s1:670, toku:false,area:'横浜'},
-  {name:'霧が丘',area:'横浜',    f:5,g:5,s1:596, toku:false,area:'横浜'},
-  {name:'新羽',area:'横浜',      f:6,g:4,s1:522, toku:false,area:'横浜'},
-  {name:'新栄',area:'横浜',      f:5,g:5,s1:531, toku:false,area:'横浜'},
-  {name:'旭',area:'横浜',        f:5,g:5,s1:554, toku:false,area:'横浜'},
-  {name:'松陽',area:'横浜',      f:4,g:6,s1:786, toku:false,area:'横浜'},
-  {name:'横浜瀬谷',area:'横浜',  f:5,g:5,s1:696, toku:false,area:'横浜'},
+  {name:'横浜翠嵐',area:'横浜',  f:3,g:7,s1:954, toku:true,area:'横浜'},
+  {name:'川和',area:'横浜',      f:4,g:6,s1:918, toku:true,area:'横浜'},
+  {name:'柏陽',area:'横浜',      f:3,g:7,s1:933, toku:true,area:'横浜'},
+  {name:'横浜緑ケ丘',f:4,g:6,s1:923, toku:true,area:'横浜'},
+  {name:'希望ケ丘',area:'横浜',  f:4,g:6,s1:886, toku:true,area:'横浜'},
+  {name:'横浜平沼',area:'横浜',  f:5,g:5,s1:862, toku:true,area:'横浜'},
+  {name:'光陵',area:'横浜',      f:4,g:6,s1:880, toku:true,area:'横浜'},
+  {name:'市ケ尾',area:'横浜',    f:5,g:5,s1:820, toku:false,area:'横浜'},
+  {name:'元石川',area:'横浜',    f:5,g:5,s1:740, toku:false,area:'横浜'},
+  {name:'荏田',area:'横浜',      f:6,g:4,s1:652, toku:false,area:'横浜'},
+  {name:'港北',area:'横浜',      f:5,g:5,s1:769, toku:false,area:'横浜'},
+  {name:'城郷',area:'横浜',      f:5,g:5,s1:620, toku:false,area:'横浜'},
+  {name:'鶴見',area:'横浜',      f:5,g:5,s1:728, toku:false,area:'横浜'},
+  {name:'岸根',area:'横浜',      f:5,g:5,s1:683, toku:false,area:'横浜'},
+  {name:'霧が丘',area:'横浜',    f:5,g:5,s1:606, toku:false,area:'横浜'},
+  {name:'新羽',area:'横浜',      f:6,g:4,s1:529, toku:false,area:'横浜'},
+  {name:'新栄',area:'横浜',      f:5,g:5,s1:540, toku:false,area:'横浜'},
+  {name:'旭',area:'横浜',        f:5,g:5,s1:563, toku:false,area:'横浜'},
+  {name:'松陽',area:'横浜',      f:4,g:6,s1:798, toku:false,area:'横浜'},
+  {name:'横浜瀬谷',area:'横浜',  f:5,g:5,s1:708, toku:false,area:'横浜'},
   {name:'二俣川',area:'横浜',    f:5,g:5,s1:558, toku:false,area:'横浜'},
-  {name:'保土ケ谷',area:'横浜',  f:7,g:3,s1:505, toku:false,area:'横浜'},
-  {name:'白山',area:'横浜',      f:7,g:3,s1:485, toku:false,area:'横浜'},
-  {name:'舞岡',area:'横浜',      f:5,g:5,s1:579, toku:false,area:'横浜'},
-  {name:'上矢部',area:'横浜',    f:5,g:5,s1:521, toku:false,area:'横浜'},
-  {name:'金井',area:'横浜',      f:5,g:5,s1:634, toku:false,area:'横浜'},
-  {name:'横浜南陵',area:'横浜',  f:5,g:5,s1:562, toku:false,area:'横浜'},
-  {name:'横浜立野',area:'横浜',  f:5,g:5,s1:612, toku:false,area:'横浜'},
-  {name:'横浜氷取沢',f:4,g:6,s1:645, toku:false,area:'横浜'},
+  {name:'保土ケ谷',area:'横浜',  f:7,g:3,s1:494, toku:false,area:'横浜'},
+  {name:'白山',area:'横浜',      f:7,g:3,s1:490, toku:false,area:'横浜'},
+  {name:'舞岡',area:'横浜',      f:5,g:5,s1:593, toku:false,area:'横浜'},
+  {name:'上矢部',area:'横浜',    f:5,g:5,s1:529, toku:false,area:'横浜'},
+  {name:'金井',area:'横浜',      f:5,g:5,s1:647, toku:false,area:'横浜'},
+  {name:'横浜南陵',area:'横浜',  f:5,g:5,s1:556, toku:false,area:'横浜'},
+  {name:'横浜立野',area:'横浜',  f:5,g:5,s1:622, toku:false,area:'横浜'},
+  {name:'横浜氷取沢',f:4,g:6,s1:657, toku:false,area:'横浜'},
   {name:'横浜緑園',area:'横浜',  f:5,g:5,s1:521, toku:false,area:'横浜'},
-  {name:'横浜桜陽',area:'横浜',  f:6,g:4,s1:456, toku:false,area:'横浜'},
-  {name:'横浜清陵',area:'横浜',  f:4,g:6,s1:626, toku:false,area:'横浜'},
-  {name:'横浜栄',area:'横浜',    f:4,g:6,s1:724, toku:false,area:'横浜'},
+  {name:'横浜桜陽',area:'横浜',  f:6,g:4,s1:464, toku:false,area:'横浜'},
+  {name:'横浜清陵',area:'横浜',  f:4,g:6,s1:635, toku:false,area:'横浜'},
+  {name:'横浜栄',area:'横浜',    f:4,g:6,s1:734, toku:false,area:'横浜'},
   // 市立横浜
-  {name:'市立桜丘',area:'横浜',  f:3,g:7,s1:814, toku:false,area:'横浜'},
-  {name:'市立金沢',area:'横浜',  f:3,g:7,s1:850, toku:false,area:'横浜'},
-  {name:'市立橘',area:'横浜',    f:4,g:6,s1:760, toku:false,area:'横浜'},
+  {name:'市立桜丘',area:'横浜',  f:3,g:7,s1:821, toku:false,area:'横浜'},
+  {name:'市立金沢',area:'横浜',  f:3,g:7,s1:853, toku:false,area:'横浜'},
+  {name:'市立橘',area:'横浜',    f:4,g:6,s1:782, toku:false,area:'横浜'},
   // 川崎
-  {name:'新城',area:'川崎',      f:5,g:5,s1:850, toku:false,area:'川崎'},
-  {name:'住吉',area:'川崎',      f:4,g:6,s1:686, toku:false,area:'川崎'},
-  {name:'川崎北',area:'川崎',    f:5,g:5,s1:562, toku:false,area:'川崎'},
-  {name:'生田',area:'川崎',      f:5,g:5,s1:775, toku:false,area:'川崎'},
-  {name:'百合丘',area:'川崎',    f:5,g:5,s1:554, toku:false,area:'川崎'},
-  {name:'生田東',area:'川崎',    f:4,g:6,s1:498, toku:false,area:'川崎'},
-  {name:'菅',area:'川崎',        f:5,g:5,s1:449, toku:false,area:'川崎'},
-  {name:'麻生',area:'川崎',      f:5,g:5,s1:603, toku:false,area:'川崎'},
-  {name:'県立川崎',area:'川崎',  f:5,g:5,s1:578, toku:false,area:'川崎'},
-  {name:'大師',area:'川崎',      f:5,g:5,s1:414, toku:false,area:'川崎'},
-  {name:'市立高津',area:'川崎',  f:5,g:5,s1:663, toku:false,area:'川崎'},
-  {name:'市立幸',area:'川崎',    f:5,g:5,s1:570, toku:false,area:'川崎'},
+  {name:'新城',area:'川崎',      f:5,g:5,s1:851, toku:false,area:'川崎'},
+  {name:'住吉',area:'川崎',      f:4,g:6,s1:698, toku:false,area:'川崎'},
+  {name:'川崎北',area:'川崎',    f:5,g:5,s1:569, toku:false,area:'川崎'},
+  {name:'生田',area:'川崎',      f:5,g:5,s1:783, toku:false,area:'川崎'},
+  {name:'百合丘',area:'川崎',    f:5,g:5,s1:566, toku:false,area:'川崎'},
+  {name:'生田東',area:'川崎',    f:4,g:6,s1:508, toku:false,area:'川崎'},
+  {name:'菅',area:'川崎',        f:5,g:5,s1:458, toku:false,area:'川崎'},
+  {name:'麻生',area:'川崎',      f:5,g:5,s1:613, toku:false,area:'川崎'},
+  {name:'県立川崎',area:'川崎',  f:5,g:5,s1:588, toku:false,area:'川崎'},
+  {name:'大師',area:'川崎',      f:5,g:5,s1:429, toku:false,area:'川崎'},
+  {name:'市立高津',area:'川崎',  f:5,g:5,s1:672, toku:false,area:'川崎'},
+  {name:'市立幸',area:'川崎',    f:5,g:5,s1:563, toku:false,area:'川崎'},
   // 横須賀・三浦
-  {name:'横須賀',area:'横須賀・三浦',    f:3,g:7,s1:872, toku:true,area:'横須賀・三浦'},
-  {name:'横須賀大津',f:4,g:6,s1:722, toku:false,area:'横須賀・三浦'},
-  {name:'追浜',area:'横須賀・三浦',      f:4,g:6,s1:790, toku:false,area:'横須賀・三浦'},
-  {name:'津久井浜',area:'横須賀・三浦',  f:5,g:5,s1:612, toku:false,area:'横須賀・三浦'},
-  {name:'逗子葉山',area:'横須賀・三浦',  f:5,g:5,s1:536, toku:false,area:'横須賀・三浦'},
-  {name:'三浦初声',area:'横須賀・三浦',  f:6,g:4,s1:488, toku:false,area:'横須賀・三浦'},
+  {name:'横須賀',area:'横須賀・三浦',    f:3,g:7,s1:870, toku:true,area:'横須賀・三浦'},
+  {name:'横須賀大津',f:4,g:6,s1:739, toku:false,area:'横須賀・三浦'},
+  {name:'追浜',area:'横須賀・三浦',      f:4,g:6,s1:806, toku:false,area:'横須賀・三浦'},
+  {name:'津久井浜',area:'横須賀・三浦',  f:5,g:5,s1:622, toku:false,area:'横須賀・三浦'},
+  {name:'逗子葉山',area:'横須賀・三浦',  f:5,g:5,s1:541, toku:false,area:'横須賀・三浦'},
+  {name:'三浦初声',area:'横須賀・三浦',  f:6,g:4,s1:490, toku:false,area:'横須賀・三浦'},
   // 鎌倉・湘南
-  {name:'鎌倉',area:'鎌倉・湘南',      f:4,g:6,s1:871, toku:true,area:'鎌倉・湘南'},
-  {name:'七里ガ浜',area:'鎌倉・湘南',  f:4,g:6,s1:769, toku:false,area:'鎌倉・湘南'},
-  {name:'大船',area:'鎌倉・湘南',      f:3,g:7,s1:741, toku:false,area:'鎌倉・湘南'},
-  {name:'湘南',area:'鎌倉・湘南',      f:4,g:6,s1:965, toku:true,area:'鎌倉・湘南'},
-  {name:'藤沢西',area:'鎌倉・湘南',    f:4,g:6,s1:748, toku:false,area:'鎌倉・湘南'},
-  {name:'湘南台',area:'鎌倉・湘南',    f:4,g:6,s1:729, toku:false,area:'鎌倉・湘南'},
-  {name:'藤沢清流',area:'鎌倉・湘南',  f:5,g:5,s1:581, toku:false,area:'鎌倉・湘南'},
+  {name:'鎌倉',area:'鎌倉・湘南',      f:4,g:6,s1:866, toku:true,area:'鎌倉・湘南'},
+  {name:'七里ガ浜',area:'鎌倉・湘南',  f:4,g:6,s1:776, toku:false,area:'鎌倉・湘南'},
+  {name:'大船',area:'鎌倉・湘南',      f:3,g:7,s1:756, toku:false,area:'鎌倉・湘南'},
+  {name:'湘南',area:'鎌倉・湘南',      f:4,g:6,s1:959, toku:true,area:'鎌倉・湘南'},
+  {name:'藤沢西',area:'鎌倉・湘南',    f:4,g:6,s1:764, toku:false,area:'鎌倉・湘南'},
+  {name:'湘南台',area:'鎌倉・湘南',    f:4,g:6,s1:741, toku:false,area:'鎌倉・湘南'},
+  {name:'藤沢清流',area:'鎌倉・湘南',  f:5,g:5,s1:577, toku:false,area:'鎌倉・湘南'},
   // 茅ケ崎・平塚
-  {name:'茅ケ崎北陵',f:4,g:6,s1:822, toku:true,area:'茅ケ崎・平塚'},
-  {name:'茅ケ崎',area:'茅ケ崎・平塚',    f:5,g:5,s1:645, toku:false,area:'茅ケ崎・平塚'},
-  {name:'鶴嶺',area:'茅ケ崎・平塚',      f:4,g:6,s1:674, toku:false,area:'茅ケ崎・平塚'},
-  {name:'茅ケ崎西浜',f:6,g:4,s1:535, toku:false,area:'茅ケ崎・平塚'},
+  {name:'茅ケ崎北陵',f:4,g:6,s1:824, toku:true,area:'茅ケ崎・平塚'},
+  {name:'茅ケ崎',area:'茅ケ崎・平塚',    f:5,g:5,s1:658, toku:false,area:'茅ケ崎・平塚'},
+  {name:'鶴嶺',area:'茅ケ崎・平塚',      f:4,g:6,s1:689, toku:false,area:'茅ケ崎・平塚'},
+  {name:'茅ケ崎西浜',f:6,g:4,s1:529, toku:false,area:'茅ケ崎・平塚'},
   // 寒川高校は2026年度末廃校のため除外
-  {name:'平塚江南',area:'茅ケ崎・平塚',  f:3,g:7,s1:843, toku:true,area:'茅ケ崎・平塚'},
-  {name:'高浜',area:'茅ケ崎・平塚',      f:5,g:5,s1:528, toku:false,area:'茅ケ崎・平塚'},
-  {name:'大磯',area:'小田原・西湘',      f:4,g:6,s1:661, toku:false,area:'小田原・西湘'},
-  {name:'二宮',area:'小田原・西湘',      f:6,g:4,s1:478, toku:false,area:'小田原・西湘'},
-  {name:'平塚湘風',area:'茅ケ崎・平塚',  f:6,g:4,s1:423, toku:false,area:'茅ケ崎・平塚'},
+  {name:'平塚江南',area:'茅ケ崎・平塚',  f:3,g:7,s1:846, toku:true,area:'茅ケ崎・平塚'},
+  {name:'高浜',area:'茅ケ崎・平塚',      f:5,g:5,s1:536, toku:false,area:'茅ケ崎・平塚'},
+  {name:'大磯',area:'小田原・西湘',      f:4,g:6,s1:679, toku:false,area:'小田原・西湘'},
+  {name:'二宮',area:'小田原・西湘',      f:6,g:4,s1:502, toku:false,area:'小田原・西湘'},
+  {name:'平塚湘風',area:'茅ケ崎・平塚',  f:6,g:4,s1:430, toku:false,area:'茅ケ崎・平塚'},
   // 秦野・伊勢原
-  {name:'秦野',area:'秦野・伊勢原',      f:4,g:6,s1:748, toku:false,area:'秦野・伊勢原'},
-  {name:'秦野曽屋',area:'秦野・伊勢原',  f:6,g:4,s1:586, toku:false,area:'秦野・伊勢原'},
-  {name:'伊勢原',area:'秦野・伊勢原',    f:5,g:5,s1:585, toku:false,area:'秦野・伊勢原'},
-  {name:'伊志田',area:'秦野・伊勢原',    f:5,g:5,s1:714, toku:false,area:'秦野・伊勢原'},
+  {name:'秦野',area:'秦野・伊勢原',      f:4,g:6,s1:783, toku:false,area:'秦野・伊勢原'},
+  {name:'秦野曽屋',area:'秦野・伊勢原',  f:6,g:4,s1:593, toku:false,area:'秦野・伊勢原'},
+  {name:'伊勢原',area:'秦野・伊勢原',    f:5,g:5,s1:588, toku:false,area:'秦野・伊勢原'},
+  {name:'伊志田',area:'秦野・伊勢原',    f:5,g:5,s1:724, toku:false,area:'秦野・伊勢原'},
   // 小田原・西湘
-  {name:'小田原',area:'小田原・西湘',    f:4,g:6,s1:895, toku:true,area:'小田原・西湘'},
-  {name:'小田原東',area:'小田原・西湘',  f:5,g:5,s1:484, toku:false,area:'小田原・西湘'},
-  {name:'西湘',area:'小田原・西湘',      f:5,g:5,s1:714, toku:false,area:'小田原・西湘'},
-  {name:'足柄',area:'小田原・西湘',      f:5,g:5,s1:542, toku:false,area:'小田原・西湘'},
-  {name:'山北',area:'小田原・西湘',      f:5,g:5,s1:467, toku:false,area:'小田原・西湘'},
+  {name:'小田原',area:'小田原・西湘',    f:4,g:6,s1:893, toku:true,area:'小田原・西湘'},
+  {name:'小田原東',area:'小田原・西湘',  f:5,g:5,s1:492, toku:false,area:'小田原・西湘'},
+  {name:'西湘',area:'小田原・西湘',      f:5,g:5,s1:742, toku:false,area:'小田原・西湘'},
+  {name:'足柄',area:'小田原・西湘',      f:5,g:5,s1:554, toku:false,area:'小田原・西湘'},
+  {name:'山北',area:'小田原・西湘',      f:5,g:5,s1:475, toku:false,area:'小田原・西湘'},
   // 厚木・海老名・大和
-  {name:'厚木',area:'県央',      f:3,g:7,s1:933, toku:true,area:'県央'},
-  {name:'厚木王子',area:'県央',  f:5,g:5,s1:699, toku:false,area:'県央'},
-  {name:'厚木北',area:'県央',    f:6,g:4,s1:544, toku:false,area:'県央'},
-  {name:'厚木西',area:'県央',    f:5,g:5,s1:614, toku:false,area:'県央'},
+  {name:'厚木',area:'県央',      f:3,g:7,s1:923, toku:true,area:'県央'},
+  {name:'厚木王子',area:'県央',  f:5,g:5,s1:711, toku:false,area:'県央'},
+  {name:'厚木北',area:'県央',    f:6,g:4,s1:551, toku:false,area:'県央'},
+  {name:'厚木西',area:'県央',    f:5,g:5,s1:624, toku:false,area:'県央'},
   {name:'厚木清南',area:'県央',  f:6,g:4,s1:null,toku:false,area:'県央'},
-  {name:'海老名',area:'県央',    f:4,g:6,s1:829, toku:false,area:'県央'},
-  {name:'有馬',area:'県央',      f:5,g:5,s1:616, toku:false,area:'県央'},
-  {name:'大和',area:'県央',      f:4,g:6,s1:893, toku:true,area:'県央'},
-  {name:'大和南',area:'県央',    f:5,g:5,s1:514, toku:false,area:'県央'},
-  {name:'大和西',area:'県央',    f:4,g:6,s1:663, toku:false,area:'県央'},
-  {name:'座間',area:'県央',      f:4,g:6,s1:790, toku:false,area:'県央'},
-  {name:'綾瀬',area:'県央',      f:6,g:4,s1:574, toku:false,area:'県央'},
-  {name:'綾瀬西',area:'県央',    f:6,g:4,s1:460, toku:false,area:'県央'},
+  {name:'海老名',area:'県央',    f:4,g:6,s1:830, toku:false,area:'県央'},
+  {name:'有馬',area:'県央',      f:5,g:5,s1:626, toku:false,area:'県央'},
+  {name:'大和',area:'県央',      f:4,g:6,s1:889, toku:true,area:'県央'},
+  {name:'大和南',area:'県央',    f:5,g:5,s1:522, toku:false,area:'県央'},
+  {name:'大和西',area:'県央',    f:4,g:6,s1:675, toku:false,area:'県央'},
+  {name:'座間',area:'県央',      f:4,g:6,s1:796, toku:false,area:'県央'},
+  {name:'綾瀬',area:'県央',      f:6,g:4,s1:584, toku:false,area:'県央'},
+  {name:'綾瀬西',area:'県央',    f:6,g:4,s1:466, toku:false,area:'県央'},
   {name:'愛川',area:'県央', f:6,g:4,s1:409, toku:false}, // 面接型
   // 相模原
-  {name:'相模原',area:'相模原',    f:5,g:5,s1:894, toku:true,area:'相模原'},
-  {name:'麻溝台',area:'相模原',    f:5,g:5,s1:768, toku:false,area:'相模原'},
-  {name:'上鶴間',area:'相模原',    f:5,g:5,s1:502, toku:false,area:'相模原'},
-  {name:'上溝',area:'相模原',      f:5,g:5,s1:649, toku:false,area:'相模原'},
-  {name:'上溝南',area:'相模原',    f:5,g:5,s1:688, toku:false,area:'相模原'},
-  {name:'橋本',area:'相模原',      f:5,g:5,s1:635, toku:false,area:'相模原'},
-  {name:'相模田名',area:'相模原',  f:7,g:3,s1:558, toku:false,area:'相模原'},
-  {name:'相模原城山',f:6,g:4,s1:527, toku:false,area:'相模原'},
-  {name:'津久井',area:'相模原',    f:6,g:4,s1:410, toku:true,area:'相模原'},
+  {name:'相模原',area:'相模原',    f:5,g:5,s1:902, toku:true,area:'相模原'},
+  {name:'麻溝台',area:'相模原',    f:5,g:5,s1:775, toku:false,area:'相模原'},
+  {name:'上鶴間',area:'相模原',    f:5,g:5,s1:510, toku:false,area:'相模原'},
+  {name:'上溝',area:'相模原',      f:5,g:5,s1:654, toku:false,area:'相模原'},
+  {name:'上溝南',area:'相模原',    f:5,g:5,s1:698, toku:false,area:'相模原'},
+  {name:'橋本',area:'相模原',      f:5,g:5,s1:645, toku:false,area:'相模原'},
+  {name:'相模田名',area:'相模原',  f:7,g:3,s1:561, toku:false,area:'相模原'},
+  {name:'相模原城山',f:6,g:4,s1:533, toku:false,area:'相模原'},
+  {name:'津久井',area:'相模原',    f:6,g:4,s1:395, toku:true,area:'相模原'},
   // 神奈川総合
   {name:'神奈川総合（個性化）',f:3,g:7,s1:888,toku:false,area:'横浜'},
-  {name:'神奈川総合（国際科）',f:4,g:6,s1:854,toku:true,area:'横浜'},
+  {name:'神奈川総合（国際科）',f:4,g:6,s1:869,toku:true,area:'横浜'},
 ];
 
 let currentTab = 'g2';
